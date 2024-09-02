@@ -58,6 +58,9 @@ class Job(models.Model):
     expired_at = models.DateTimeField()
     resumes = models.ManyToManyField(Resume, through='Application')
 
+    def __str__(self):
+        return self.title
+
 
 class Application(models.Model):
     STATUS_CHOICES = {

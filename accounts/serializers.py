@@ -9,6 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "first_name", "last_name", "phone_number"]
 
 
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password', 'phone_number', 'address']
+
+
 class UserCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = User

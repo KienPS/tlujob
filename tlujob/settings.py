@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_spectacular',
+    'django_rest_passwordreset',
     'corsheaders',
 
     "accounts.apps.AccountsConfig",

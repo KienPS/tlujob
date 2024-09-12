@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:8000'; // Replace with your backend URL
+const BASE_URL = 'http://localhost:8000';
 
 enum StatusEnum {
   Pending = 'pending',
@@ -14,10 +14,10 @@ enum WorkingFormEnum {
   Contract = 'contract',
 }
 
-class APIClient {
+export class APIClient {
   private instance: AxiosInstance;
 
-  constructor(baseURL: string, config?: AxiosRequestConfig) {
+  constructor(baseURL: string = BASE_URL, config?: AxiosRequestConfig) {
     this.instance = axios.create({
       baseURL,
       ...config,
@@ -31,281 +31,333 @@ class APIClient {
 
   // Applications
   async getApplications() {
-    const response = await this.instance.get('/api/applications/');
-    return response.data;
+    return this.instance.get('/api/applications/')
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async createApplication(data: any) {
-    const response = await this.instance.post('/api/applications/', data);
-    return response.data;
+    return this.instance.post('/api/applications/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getApplication(id: string) {
-    const response = await this.instance.get(`/api/applications/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/applications/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateApplication(id: string, data: any) {
-    const response = await this.instance.put(`/api/applications/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/applications/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateApplication(id: string, data: any) {
-    const response = await this.instance.patch(`/api/applications/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/applications/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteApplication(id: string) {
-    const response = await this.instance.delete(`/api/applications/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/applications/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Companies
   async getCompanies() {
-    const response = await this.instance.get('/api/companies/');
-    return response.data;
+    return this.instance.get('/api/companies/')
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async createCompany(data: any) {
-    const response = await this.instance.post('/api/companies/', data);
-    return response.data;
+    return this.instance.post('/api/companies/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getCompany(id: number) {
-    const response = await this.instance.get(`/api/companies/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/companies/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateCompany(id: number, data: any) {
-    const response = await this.instance.put(`/api/companies/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/companies/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateCompany(id: number, data: any) {
-    const response = await this.instance.patch(`/api/companies/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/companies/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteCompany(id: number) {
-    const response = await this.instance.delete(`/api/companies/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/companies/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getCompanyMembers(companyId: number) {
-    const response = await this.instance.get(`/api/companies/${companyId}/members/`);
-    return response.data;
+    return this.instance.get(`/api/companies/${companyId}/members/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async addUserToCompany(id: string, data: any) {
-    const response = await this.instance.put(`/api/companies/add/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/companies/add/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateUserInCompany(id: string, data: any) {
-    const response = await this.instance.patch(`/api/companies/add/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/companies/add/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async promoteUserInCompany(id: string, data: any) {
-    const response = await this.instance.put(`/api/companies/promote/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/companies/promote/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialPromoteUserInCompany(id: string, data: any) {
-    const response = await this.instance.patch(`/api/companies/promote/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/companies/promote/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async removeUserFromCompany(id: string, data: any) {
-    const response = await this.instance.put(`/api/companies/remove/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/companies/remove/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialRemoveUserFromCompany(id: string, data: any) {
-    const response = await this.instance.patch(`/api/companies/remove/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/companies/remove/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Job Categories
   async getJobCategories() {
-    const response = await this.instance.get('/api/job_categories/');
-    return response.data;
+    return this.instance.get('/api/job_categories/')
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async createJobCategory(data: any) {
-    const response = await this.instance.post('/api/job_categories/', data);
-    return response.data;
+    return this.instance.post('/api/job_categories/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getJobCategory(id: number) {
-    const response = await this.instance.get(`/api/job_categories/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/job_categories/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateJobCategory(id: number, data: any) {
-    const response = await this.instance.put(`/api/job_categories/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/job_categories/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateJobCategory(id: number, data: any) {
-    const response = await this.instance.patch(`/api/job_categories/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/job_categories/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteJobCategory(id: number) {
-    const response = await this.instance.delete(`/api/job_categories/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/job_categories/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Jobs
   async getJobs() {
-    const response = await this.instance.get('/api/jobs/');
-    return response.data;
+    return this.instance.get('/api/jobs/')
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async createJob(data: any) {
-    const response = await this.instance.post('/api/jobs/', data);
-    return response.data;
+    return this.instance.post('/api/jobs/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getJob(id: number) {
-    const response = await this.instance.get(`/api/jobs/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/jobs/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateJob(id: number, data: any) {
-    const response = await this.instance.put(`/api/jobs/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/jobs/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateJob(id: number, data: any) {
-    const response = await this.instance.patch(`/api/jobs/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/jobs/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteJob(id: number) {
-    const response = await this.instance.delete(`/api/jobs/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/jobs/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getJobApplications(jobId: number) {
-    const response = await this.instance.get(`/api/jobs/${jobId}/applications/`);
-    return response.data;
+    return this.instance.get(`/api/jobs/${jobId}/applications/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getJobApplication(jobId: number, applicationId: string) {
-    const response = await this.instance.get(`/api/jobs/${jobId}/applications/${applicationId}/`);
-    return response.data;
+    return this.instance.get(`/api/jobs/${jobId}/applications/${applicationId}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateJobApplicationStatus(jobId: number, applicationId: string, data: any) {
-    const response = await this.instance.put(`/api/jobs/${jobId}/applications/${applicationId}/update/`, data);
-    return response.data;
+    return this.instance.put(`/api/jobs/${jobId}/applications/${applicationId}/update/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateJobApplicationStatus(jobId: number, applicationId: string, data: any) {
-    const response = await this.instance.patch(`/api/jobs/${jobId}/applications/${applicationId}/update/`, data);
-    return response.data;
+    return this.instance.patch(`/api/jobs/${jobId}/applications/${applicationId}/update/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Resumes
   async getResumes() {
-    const response = await this.instance.get('/api/resumes/');
-    return response.data;
+    return this.instance.get('/api/resumes/')
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async createResume(data: any) {
-    const response = await this.instance.post('/api/resumes/', data);
-    return response.data;
+    return this.instance.post('/api/resumes/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getResume(id: string) {
-    const response = await this.instance.get(`/api/resumes/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/resumes/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateResume(id: string, data: any) {
-    const response = await this.instance.put(`/api/resumes/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/resumes/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateResume(id: string, data: any) {
-    const response = await this.instance.patch(`/api/resumes/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/resumes/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteResume(id: string) {
-    const response = await this.instance.delete(`/api/resumes/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/resumes/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Skills
   async getSkills() {
-    const response = await this.instance.get('/api/skills/');
-    return response.data;
+    return this.instance.get('/api/skills/')
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async createSkill(data: any) {
-    const response = await this.instance.post('/api/skills/', data);
-    return response.data;
+    return this.instance.post('/api/skills/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async getSkill(id: number) {
-    const response = await this.instance.get(`/api/skills/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/skills/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateSkill(id: number, data: any) {
-    const response = await this.instance.put(`/api/skills/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/skills/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateSkill(id: number, data: any) {
-    const response = await this.instance.patch(`/api/skills/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/skills/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteSkill(id: number) {
-    const response = await this.instance.delete(`/api/skills/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/skills/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Authentication
   async register(data: any) {
-    const response = await this.instance.post('/api/register/', data);
-    return response.data;
+    return this.instance.post('/api/register/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async login(data: any) {
-    const response = await this.instance.post('/api/token/', data);
-    return response.data;
+    return this.instance.post('/api/token/', data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async refreshToken(refreshToken: string) {
-    const response = await this.instance.post('/api/token/refresh/', { refresh: refreshToken });
-    return response.data;
+    return this.instance.post('/api/token/refresh/', { refresh: refreshToken })
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   // Users
   async getUser(id: string) {
-    const response = await this.instance.get(`/api/users/${id}/`);
-    return response.data;
+    return this.instance.get(`/api/users/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async updateUser(id: string, data: any) {
-    const response = await this.instance.put(`/api/users/${id}/`, data);
-    return response.data;
+    return this.instance.put(`/api/users/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async partialUpdateUser(id: string, data: any) {
-    const response = await this.instance.patch(`/api/users/${id}/`, data);
-    return response.data;
+    return this.instance.patch(`/api/users/${id}/`, data)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 
   async deleteUser(id: string) {
-    const response = await this.instance.delete(`/api/users/${id}/`);
-    return response.data;
+    return this.instance.delete(`/api/users/${id}/`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
   }
 }
-
-export default new APIClient(BASE_URL);

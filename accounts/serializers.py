@@ -7,18 +7,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+        exclude = ['groups', 'user_permissions']
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'phone_number', 'address']
-        # exclude = ['groups', 'user_permissions']
-        # extra_kwargs = {
-        #     'password': {
-        #         'write_only': True,
-        #     },
-        # }
 
 
 class CandidateSerializer(serializers.ModelSerializer):

@@ -1,24 +1,13 @@
-from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.generics import get_object_or_404
 
-from job_recruitment.models import *
-
-
-class ReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return request.method in SAFE_METHODS
+from accounts.models import User, Candidate, Employer
+from job_recruitment.models import Job
 
 
-class IsOwner(BasePermission):
+class IsJobCreator(BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.user == request.user
-
-
-class IsInACompany(BasePermission):
-    def has_permission(self, request, view):
-        return request.method in SAFE_METHODS or request.user.company is not None
-
-
-class IsCompanyOwner(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return obj.job.company == request.user.company and request.user.is_manager
+        job_id = view.kwargs.get('job_id')
+        job = get_object_or_404(Job, id=job_id)
+        employer = get_object_or_404(Employer, user=request.user)
+        return job.employer == employer

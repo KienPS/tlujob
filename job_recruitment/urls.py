@@ -7,17 +7,14 @@ from job_recruitment.views import *
 app_name = 'job_recruitment'
 
 router = routers.DefaultRouter()
-router.register(r'companies', CompanyViewSet)
-router.register(r'resumes', ResumeViewSet)
-router.register(r'skills', SkillViewSet)
-router.register(r'job_categories', JobCategoryViewSet)
-router.register(r'jobs', JobViewSet)
-router.register(r'applications', UserApplicationViewSet)
+router.register(r'resumes', ResumeViewSet, basename='resumes')
+router.register(r'jobs', JobViewSet, basename='job_by_employer')
+router.register(r'applications', ApplicationCandidateViewSet, basename='application_for_candidate')
 
 urlpatterns = [
-    path('companies/<int:company_id>/members/', CompanyMemberList.as_view()),
-    path('jobs/<int:job_id>/applications/', JobApplicationList.as_view()),
-    path('jobs/<int:job_id>/applications/<uuid:pk>/', JobApplicationRetrieve.as_view()),
-    path('jobs/<int:job_id>/applications/<uuid:pk>/update/', JobApplicationUpdate.as_view()),
+    path('public/jobs/', JobListAPIView.as_view()),
+    path('public/jobs/<int:pk>', JobRetrieveAPIView.as_view()),
+    path('jobs/<int:job_id>/applications/', ApplicationEmployerListAPIView.as_view()),
+    path('jobs/<int:job_id>/applications/<int:pk>/', ApplicationEmployerRetrieveUpdateAPIView.as_view()),
     path('', include(router.urls)),
 ]

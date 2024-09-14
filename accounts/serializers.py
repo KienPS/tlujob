@@ -1,22 +1,37 @@
 from rest_framework import serializers
 
-from accounts.models import User
+from accounts.models import User, Candidate, Employer
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "phone_number"]
+        fields = '__all__'
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'phone_number', 'address']
+        # exclude = ['groups', 'user_permissions']
+        # extra_kwargs = {
+        #     'password': {
+        #         'write_only': True,
+        #     },
+        # }
 
 
-class UserCompanySerializer(serializers.ModelSerializer):
+class CandidateSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
-        model = User
-        fields = ["company", "is_manager"]
-        read_only_fields = ["company"]
+        model = Candidate
+        fields = '__all__'
+
+
+class EmployerSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Employer
+        fields = '__all__'

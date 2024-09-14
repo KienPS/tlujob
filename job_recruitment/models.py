@@ -1,65 +1,39 @@
-from typing import TYPE_CHECKING
 import uuid
 
 from django.db import models
 
-from django.conf import settings
-
-
-class Company(models.Model):
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
+from accounts.models import User, Candidate, Employer
 
 
 class Resume(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    attachment = models.FileField(upload_to='resumes/')
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='resumes/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
-
-
-class Skill(models.Model):
-    name = models.CharField(max_length=100)
-
-
-class JobCategory(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
 
 
 class Job(models.Model):
-    WORKING_FORM_CHOICES = {
-        'part-time': 'Part time',
-        'full-time': 'Full time',
+    JOB_TYPE_CHOICES = {
+        'fulltime': 'Full-time',
+        'parttime': 'Part-time',
         'contract': 'Contract',
     }
 
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.ForeignKey(JobCategory, on_delete=models.CASCADE, related_name='jobs')
-    skills = models.ManyToManyField(Skill)
-    salary_min = models.PositiveIntegerField()
-    salary_max = models.PositiveIntegerField()
-    working_form = models.CharField(max_length=16, choices=WORKING_FORM_CHOICES)
-    min_year_of_exp = models.PositiveIntegerField(default=0)
-    posted_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    expired_at = models.DateTimeField()
-    resumes = models.ManyToManyField(Resume, through='Application')
-
-    def __str__(self):
-        return self.title
+    address = models.TextField()
+    type = models.CharField(max_length=16, choices=JOB_TYPE_CHOICES)
+    salary_min = models.PositiveIntegerField(default=0)
+    salary_max = models.PositiveIntegerField(default=0)
+    requirements = models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+    date_expired = models.DateTimeField()
+    last_updated = models.DateTimeField(auto_now=True)
 
 
 class Application(models.Model):
@@ -69,11 +43,15 @@ class Application(models.Model):
         'rejected': 'Rejected',
     }
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='pending')
-    applied_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES)
+    date_applied = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f'{self.resume.user.username} - {self.job.title}'
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)

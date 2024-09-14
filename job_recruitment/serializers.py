@@ -33,6 +33,12 @@ class ResumeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class JobPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+
 class JobSerializer(serializers.ModelSerializer):
     employer = serializers.HiddenField(default=CurrentEmployerDefault())
 

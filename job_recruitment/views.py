@@ -6,7 +6,8 @@ from accounts.models import User, Candidate, Employer
 # from job_recruitment.permissions import *
 from job_recruitment.models import Resume, Job, Application, Notification
 from job_recruitment.permissions import IsJobCreator
-from job_recruitment.serializers import ResumeSerializer, JobSerializer, ApplicationCandidateSerializer, ApplicationEmployerSerializer, NotificationSerializer
+from job_recruitment.serializers import ResumeSerializer, JobSerializer, ApplicationCandidateSerializer, \
+    ApplicationEmployerSerializer, NotificationSerializer, JobPublicSerializer
 
 
 class ResumeViewSet(viewsets.ModelViewSet):
@@ -22,13 +23,13 @@ class ResumeViewSet(viewsets.ModelViewSet):
 
 class JobListAPIView(generics.ListAPIView):
     queryset = Job.objects.all()
-    serializer_class = JobSerializer
+    serializer_class = JobPublicSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class JobRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Job.objects.all()
-    serializer_class = JobSerializer
+    serializer_class = JobPublicSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
